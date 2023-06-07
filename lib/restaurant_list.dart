@@ -33,7 +33,7 @@ class RestaurantListPage extends StatelessWidget {
                   }));
             }
           } else {
-            return const SafeArea(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
@@ -43,11 +43,14 @@ class RestaurantListPage extends StatelessWidget {
 
 Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
   return ListTile(
-    leading: Image.network(
-      restaurant.pictureId.toString(),
-      width: 100,
-      height: 100,
-      fit: BoxFit.fill,
+    leading: Hero(
+      tag: restaurant.id.toString(),
+      child: Image.network(
+        restaurant.pictureId.toString(),
+        width: 100,
+        height: 100,
+        fit: BoxFit.fill,
+      ),
     ),
     trailing: const Icon(Icons.navigate_next),
     isThreeLine: true,
