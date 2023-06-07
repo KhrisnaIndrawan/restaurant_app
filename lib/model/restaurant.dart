@@ -1,20 +1,20 @@
-class Restaurant {
-  List<Restaurants>? _restaurants;
+class Restaurants {
+  List<Restaurant>? _restaurants;
 
-  Restaurant({List<Restaurants>? restaurants}) {
+  Restaurants({List<Restaurant>? restaurants}) {
     if (restaurants != null) {
       this._restaurants = restaurants;
     }
   }
 
-  List<Restaurants>? get restaurants => _restaurants;
-  set restaurants(List<Restaurants>? restaurants) => _restaurants = restaurants;
+  List<Restaurant>? get restaurants => _restaurants;
+  set restaurants(List<Restaurant>? restaurants) => _restaurants = restaurants;
 
-  Restaurant.fromJson(Map<String, dynamic> json) {
+  Restaurants.fromJson(Map<String, dynamic> json) {
     if (json['restaurants'] != null) {
-      _restaurants = <Restaurants>[];
+      _restaurants = <Restaurant>[];
       json['restaurants'].forEach((v) {
-        _restaurants!.add(new Restaurants.fromJson(v));
+        _restaurants!.add(new Restaurant.fromJson(v));
       });
     }
   }
@@ -28,7 +28,7 @@ class Restaurant {
   }
 }
 
-class Restaurants {
+class Restaurant {
   String? _id;
   String? _name;
   String? _description;
@@ -37,7 +37,7 @@ class Restaurants {
   double? _rating;
   Menus? _menus;
 
-  Restaurants(
+  Restaurant(
       {String? id,
       String? name,
       String? description,
@@ -83,7 +83,7 @@ class Restaurants {
   Menus? get menus => _menus;
   set menus(Menus? menus) => _menus = menus;
 
-  Restaurants.fromJson(Map<String, dynamic> json) {
+  Restaurant.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _name = json['name'];
     _description = json['description'];
