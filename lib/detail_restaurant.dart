@@ -76,7 +76,7 @@ class RestaurantDetailPage extends StatelessWidget {
                         if (food != null) {
                           return _buildFooditem(context, food);
                         }
-                        return const CircularProgressIndicator();
+                        return const Text('No data');
                       }),
                   const SizedBox(height: 16.0),
                   const Text(
@@ -97,7 +97,7 @@ class RestaurantDetailPage extends StatelessWidget {
                         if (drink != null) {
                           return _buildDrinkitem(context, drink);
                         }
-                        return const CircularProgressIndicator();
+                        return const Text('No Data');
                       }),
                 ],
               ),
