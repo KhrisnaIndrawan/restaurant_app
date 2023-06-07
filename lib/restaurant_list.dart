@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/detail_restaurant.dart';
 import 'package:restaurant_app/model/restaurant.dart';
 
 class RestaurantListPage extends StatelessWidget {
@@ -73,5 +74,9 @@ Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
         )
       ],
     ),
+    onTap: () {
+      Navigator.pushNamed(context, RestaurantDetailPage.routeName,
+          arguments: restaurant);
+    },
   );
 }
