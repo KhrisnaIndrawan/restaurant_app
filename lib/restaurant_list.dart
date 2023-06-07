@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/detail_restaurant.dart';
 import 'package:restaurant_app/model/restaurant.dart';
-import 'package:flutter/foundation.dart';
 
 class RestaurantListPage extends StatefulWidget {
   static const routeName = '/restaurant_list';
