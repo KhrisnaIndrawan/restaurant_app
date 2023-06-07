@@ -18,10 +18,13 @@ class RestaurantDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              restaurant.pictureId.toString(),
-              fit: BoxFit.fitWidth,
-              width: double.infinity,
+            Hero(
+              tag: restaurant.id.toString(),
+              child: Image.network(
+                restaurant.pictureId.toString(),
+                fit: BoxFit.fitWidth,
+                width: double.infinity,
+              ),
             ),
             Container(
               margin: const EdgeInsets.all(8.0),
@@ -73,6 +76,7 @@ class RestaurantDetailPage extends StatelessWidget {
                         if (food != null) {
                           return _buildFooditem(context, food);
                         }
+                        return const CircularProgressIndicator();
                       }),
                   const SizedBox(height: 16.0),
                   const Text(
@@ -93,6 +97,7 @@ class RestaurantDetailPage extends StatelessWidget {
                         if (drink != null) {
                           return _buildDrinkitem(context, drink);
                         }
+                        return const CircularProgressIndicator();
                       }),
                 ],
               ),
