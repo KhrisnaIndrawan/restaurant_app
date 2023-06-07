@@ -18,7 +18,11 @@ class RestaurantDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(restaurant.pictureId.toString()),
+            Image.network(
+              restaurant.pictureId.toString(),
+              fit: BoxFit.fitWidth,
+              width: double.infinity,
+            ),
             Container(
               margin: const EdgeInsets.all(8.0),
               child: Column(
