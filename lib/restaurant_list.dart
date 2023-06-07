@@ -53,6 +53,26 @@ Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
     isThreeLine: true,
     title: Text(restaurant.name.toString(),
         style: const TextStyle(fontWeight: FontWeight.bold)),
-    subtitle: Text('City: ${restaurant.city} \nRating: ${restaurant.rating}'),
+    subtitle: Column(
+      children: [
+        Row(
+          children: [
+            const Icon(Icons.location_on, size: 16.0),
+            const SizedBox(width: 4.0),
+            Text(restaurant.city.toString())
+          ],
+        ),
+        Row(
+          children: [
+            const Icon(
+              Icons.star,
+              size: 16.0,
+            ),
+            const SizedBox(width: 4.0),
+            Text(restaurant.rating.toString())
+          ],
+        )
+      ],
+    ),
   );
 }
