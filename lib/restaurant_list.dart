@@ -16,6 +16,13 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
   List<Restaurant> restaurants = [];
 
   @override
+  void initState() {
+    addInitialData();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -34,54 +41,56 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                       borderRadius: BorderRadius.circular(8.0),
                       borderSide: const BorderSide(color: Colors.blue))),
               onChanged: (value) {
-                _searchRestaurant(value);
-              },
-            ),
-          ),
-          Expanded(
-            child: FutureBuilder<String>(
-              future: DefaultAssetBundle.of(context)
-                  .loadString('assets/restaurant.json'),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.data == null) {
-                    return const Text('no data');
-                  } else {
-                    final data = Restaurants.fromJson(
-                        jsonDecode(snapshot.data.toString()));
-
-                    restaurants
-                        .addAll(data.restaurants as Iterable<Restaurant>);
-
-                    return ListView.builder(
-                        key: UniqueKey(),
-                        shrinkWrap: true,
-                        itemCount: restaurants.length,
-                        itemBuilder: ((context, index) {
-                          return _buildRestaurantItem(
-                              context, restaurants[index]);
-                        }));
-                  }
+                if (value.isEmpty == true) {
+                  addInitialData();
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  _searchRestaurant(value);
                 }
               },
             ),
           ),
+          Expanded(
+              child: ListView.builder(
+                  key: UniqueKey(),
+                  shrinkWrap: true,
+                  itemCount: restaurants.length,
+                  itemBuilder: ((context, index) {
+                    return _buildRestaurantItem(context, restaurants[index]);
+                  }))),
         ],
       ),
     );
   }
 
   void _searchRestaurant(String query) {
-    setState(() {
-      restaurants.clear();
-      var searchItems = restaurants
-          .where((element) =>
-              element.name!.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+    var searchItems = restaurants
+        .where((element) =>
+            element.name!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
 
+    restaurants.clear();
+
+    setState(() {
       restaurants.addAll(searchItems);
+    });
+  }
+
+  void addInitialData() {
+    Future<String> jsonData = fetchRestauransData();
+    addDatatoRestaurantList(jsonData);
+  }
+
+  Future<String> fetchRestauransData() {
+    return DefaultAssetBundle.of(context).loadString('assets/restaurant.json');
+  }
+
+  Future<void> addDatatoRestaurantList(Future<String> jsonData) async {
+    final Restaurants data = Restaurants.fromJson(jsonDecode(await jsonData));
+
+    restaurants.clear();
+
+    setState(() {
+      restaurants.addAll(data.restaurants as Iterable<Restaurant>);
     });
   }
 }
