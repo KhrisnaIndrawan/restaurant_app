@@ -48,6 +48,16 @@ class RestaurantDetailPage extends StatelessWidget {
                       Text(restaurant.city().toString())
                     ],
                   ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.star,
+                        size: 16.0,
+                      ),
+                      const SizedBox(width: 4.0),
+                      Text(restaurant.rating().toString())
+                    ],
+                  ),
                   const SizedBox(height: 16.0),
                   const Text(
                     'About the restaurant',
