@@ -65,7 +65,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
   void _searchRestaurant(String query) {
     var searchItems = restaurants
         .where((element) =>
-            element.name!.toLowerCase().contains(query.toLowerCase()))
+            element.name()!.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     restaurants.clear();
@@ -90,7 +90,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
     restaurants.clear();
 
     setState(() {
-      restaurants.addAll(data.restaurants as Iterable<Restaurant>);
+      restaurants.addAll(data.restaurants() as Iterable<Restaurant>);
     });
   }
 }
@@ -98,9 +98,9 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
 Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
   return ListTile(
     leading: Hero(
-      tag: restaurant.id.toString(),
+      tag: restaurant.id().toString(),
       child: Image.network(
-        restaurant.pictureId.toString(),
+        restaurant.pictureId().toString(),
         width: 100,
         height: 100,
         fit: BoxFit.fill,
@@ -108,7 +108,7 @@ Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
     ),
     trailing: const Icon(Icons.navigate_next),
     isThreeLine: true,
-    title: Text(restaurant.name.toString(),
+    title: Text(restaurant.name().toString(),
         style: const TextStyle(fontWeight: FontWeight.bold)),
     subtitle: Column(
       children: [
@@ -116,7 +116,7 @@ Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
           children: [
             const Icon(Icons.location_on, size: 16.0),
             const SizedBox(width: 4.0),
-            Text(restaurant.city.toString())
+            Text(restaurant.city().toString())
           ],
         ),
         Row(
@@ -126,7 +126,7 @@ Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
               size: 16.0,
             ),
             const SizedBox(width: 4.0),
-            Text(restaurant.rating.toString())
+            Text(restaurant.rating().toString())
           ],
         )
       ],
