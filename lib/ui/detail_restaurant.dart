@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/model/restaurant.dart';
+import 'package:restaurant_app/data/model/restaurant.dart';
 
 class RestaurantDetailPage extends StatelessWidget {
   static const routeName = '/restaurant_detail';
@@ -19,9 +19,9 @@ class RestaurantDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
-              tag: restaurant.id().toString(),
+              tag: restaurant.id.toString(),
               child: Image.network(
-                restaurant.pictureId().toString(),
+                'https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}',
                 fit: BoxFit.fitWidth,
                 width: double.infinity,
               ),
@@ -33,7 +33,7 @@ class RestaurantDetailPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 16.0),
                   Text(
-                    restaurant.name().toString(),
+                    restaurant.name.toString(),
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 28.0),
                     textAlign: TextAlign.start,
@@ -45,7 +45,7 @@ class RestaurantDetailPage extends StatelessWidget {
                         size: 16.0,
                       ),
                       const SizedBox(width: 4.0),
-                      Text(restaurant.city().toString())
+                      Text(restaurant.city.toString())
                     ],
                   ),
                   Row(
@@ -55,7 +55,7 @@ class RestaurantDetailPage extends StatelessWidget {
                         size: 16.0,
                       ),
                       const SizedBox(width: 4.0),
-                      Text(restaurant.rating().toString())
+                      Text(restaurant.rating.toString())
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -66,7 +66,7 @@ class RestaurantDetailPage extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: 8.0),
-                  Text(restaurant.description().toString()),
+                  Text(restaurant.description.toString()),
                   const SizedBox(height: 16.0),
                   const Text(
                     'Food Categories',
@@ -75,19 +75,19 @@ class RestaurantDetailPage extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: 8.0),
-                  ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: const ScrollPhysics(),
-                      itemCount: restaurant.menus()?.foods()?.length,
-                      itemBuilder: (context, index) {
-                        var food = restaurant.menus()?.foods()?[index];
+                  // ListView.builder(
+                  //     scrollDirection: Axis.vertical,
+                  //     shrinkWrap: true,
+                  //     physics: const ScrollPhysics(),
+                  //     itemCount: restaurant.menus.foods.length,
+                  //     itemBuilder: (context, index) {
+                  //       var food = restaurant.menus.foods[index];
 
-                        if (food != null) {
-                          return _buildFooditem(context, food);
-                        }
-                        return const Text('No data');
-                      }),
+                  //       if (food != null) {
+                  //         return _buildFooditem(context, food);
+                  //       }
+                  //       return const Text('No data');
+                  //     }),
                   const SizedBox(height: 16.0),
                   const Text(
                     'Drink Categories',
@@ -96,19 +96,19 @@ class RestaurantDetailPage extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: 8.0),
-                  ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: const ScrollPhysics(),
-                      itemCount: restaurant.menus()?.drinks()?.length,
-                      itemBuilder: (context, index) {
-                        var drink = restaurant.menus()?.drinks()?[index];
+                  // ListView.builder(
+                  //     scrollDirection: Axis.vertical,
+                  //     shrinkWrap: true,
+                  //     physics: const ScrollPhysics(),
+                  //     itemCount: restaurant.menus.drinks.length,
+                  //     itemBuilder: (context, index) {
+                  //       var drink = restaurant.menus.drinks[index];
 
-                        if (drink != null) {
-                          return _buildDrinkitem(context, drink);
-                        }
-                        return const Text('No Data');
-                      }),
+                  //       if (drink != null) {
+                  //         return _buildDrinkitem(context, drink);
+                  //       }
+                  //       return const Text('No Data');
+                  //     }),
                 ],
               ),
             ),
@@ -119,16 +119,16 @@ class RestaurantDetailPage extends StatelessWidget {
   }
 }
 
-Widget _buildFooditem(BuildContext context, Foods foods) {
-  return ListTile(
-    leading: const Icon(Icons.fastfood_rounded),
-    title: Text(foods.name().toString()),
-  );
-}
+// Widget _buildFooditem(BuildContext context, Foods foods) {
+//   return ListTile(
+//     leading: const Icon(Icons.fastfood_rounded),
+//     title: Text(foods.name().toString()),
+//   );
+// }
 
-Widget _buildDrinkitem(BuildContext context, Drinks drinks) {
-  return ListTile(
-    leading: const Icon(Icons.local_drink),
-    title: Text(drinks.name().toString()),
-  );
-}
+// Widget _buildDrinkitem(BuildContext context, Drinks drinks) {
+//   return ListTile(
+//     leading: const Icon(Icons.local_drink),
+//     title: Text(drinks.name().toString()),
+//   );
+// }
