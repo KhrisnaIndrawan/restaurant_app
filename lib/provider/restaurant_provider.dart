@@ -43,4 +43,18 @@ class RestaurantProvider extends ChangeNotifier {
       return _message = 'Error --> $e';
     }
   }
+
+  void updateRestaurantList() {
+    _fetchAllRestaurant();
+  }
+
+  void searchRestaurant(String query) {
+    final searchList = result.restaurants
+        .where((element) =>
+            element.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    _restaurantResult.restaurants = searchList;
+    notifyListeners();
+  }
 }

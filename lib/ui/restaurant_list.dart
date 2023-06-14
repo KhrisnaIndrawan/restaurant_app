@@ -37,64 +37,55 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                       borderRadius: BorderRadius.circular(8.0),
                       borderSide: const BorderSide(color: Colors.blue))),
               onChanged: (value) {
-                if (value.isEmpty == true) {
-                  // _getRestaurantList();
+                if (value.isEmpty) {
+                  Provider.of<RestaurantProvider>(context, listen: false)
+                      .updateRestaurantList();
                 } else {
-                  // _searchRestaurant(value);
+                  Provider.of<RestaurantProvider>(context, listen: false)
+                      .searchRestaurant(value);
                 }
               },
             ),
           ),
-          Expanded(child: Consumer<RestaurantProvider>(
-            builder: (context, state, _) {
-              if (state.state == ResultState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state.state == ResultState.hasData) {
-                return ListView.builder(
-                  key: UniqueKey(),
-                  shrinkWrap: true,
-                  itemCount: state.result.restaurants.length,
-                  itemBuilder: ((context, index) {
-                    return CardRestaurant(
-                        restaurant: state.result.restaurants[index]);
-                  }),
-                );
-              } else if (state.state == ResultState.noData) {
-                return Center(
-                  child: Material(
-                    child: Text(state.message),
-                  ),
-                );
-              } else if (state.state == ResultState.error) {
-                return Center(
-                  child: Material(
-                    child: Text(state.message),
-                  ),
-                );
-              } else {
-                return const Center(
-                  child: Material(
-                    child: Text(''),
-                  ),
-                );
-              }
-            },
-          )),
+          Expanded(
+            child: Consumer<RestaurantProvider>(
+              builder: (context, state, _) {
+                if (state.state == ResultState.loading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state.state == ResultState.hasData) {
+                  return ListView.builder(
+                    key: UniqueKey(),
+                    shrinkWrap: true,
+                    itemCount: state.result.restaurants.length,
+                    itemBuilder: ((context, index) {
+                      return CardRestaurant(
+                          restaurant: state.result.restaurants[index]);
+                    }),
+                  );
+                } else if (state.state == ResultState.noData) {
+                  return Center(
+                    child: Material(
+                      child: Text(state.message),
+                    ),
+                  );
+                } else if (state.state == ResultState.error) {
+                  return Center(
+                    child: Material(
+                      child: Text(state.message),
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: Material(
+                      child: Text(''),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
   }
-
-  // void _searchRestaurant(String query) {
-  //   var searchItems = _restaurants
-  //       .where((element) =>
-  //           element.name.toLowerCase().contains(query.toLowerCase()))
-  //       .toList();
-
-  //   _restaurants.clear();
-
-  //   setState(() {
-  //     _restaurants.addAll(searchItems);
-  //   });
-  // }
 }

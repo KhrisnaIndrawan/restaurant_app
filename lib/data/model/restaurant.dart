@@ -4,7 +4,7 @@ class RestaurantResult {
   final bool error;
   final String message;
   final int count;
-  final List<Restaurant> restaurants;
+  List<Restaurant> restaurants;
 
   RestaurantResult({
     required this.error,
