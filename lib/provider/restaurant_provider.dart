@@ -1,7 +1,6 @@
 import 'dart:async';
-
 import 'package:restaurant_app/data/api/api_service.dart';
-import 'package:restaurant_app/data/model/restaurant.dart';
+import 'package:restaurant_app/data/model/restaurant_list.dart';
 import 'package:flutter/material.dart';
 
 enum ResultState { loading, noData, hasData, error }
@@ -13,13 +12,13 @@ class RestaurantProvider extends ChangeNotifier {
     _fetchAllRestaurant();
   }
 
-  late RestaurantResult _restaurantResult;
+  late RestaurantsResult _restaurantsResult;
   late ResultState _state;
   String _message = '';
 
   String get message => _message;
 
-  RestaurantResult get result => _restaurantResult;
+  RestaurantsResult get result => _restaurantsResult;
 
   ResultState get state => _state;
 
@@ -35,7 +34,7 @@ class RestaurantProvider extends ChangeNotifier {
       } else {
         _state = ResultState.hasData;
         notifyListeners();
-        return _restaurantResult = restaurant;
+        return _restaurantsResult = restaurant;
       }
     } catch (e) {
       _state = ResultState.error;
@@ -54,7 +53,7 @@ class RestaurantProvider extends ChangeNotifier {
             element.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
-    _restaurantResult.restaurants = searchList;
+    _restaurantsResult.restaurants = searchList;
     notifyListeners();
   }
 }
