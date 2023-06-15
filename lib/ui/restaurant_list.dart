@@ -51,7 +51,10 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
             child: Consumer<RestaurantProvider>(
               builder: (context, state, _) {
                 if (state.state == ResultState.loading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    backgroundColor: Colors.black,
+                  ));
                 } else if (state.state == ResultState.hasData) {
                   return ListView.builder(
                     key: UniqueKey(),
@@ -71,13 +74,14 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                 } else if (state.state == ResultState.error) {
                   return Center(
                     child: Material(
-                      child: Text(state.message),
+                      child: Text(
+                          '${state.message} please check you internet connection'),
                     ),
                   );
                 } else {
                   return const Center(
                     child: Material(
-                      child: Text(''),
+                      child: Text('Please check your internet connection'),
                     ),
                   );
                 }

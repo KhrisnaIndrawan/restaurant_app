@@ -25,7 +25,10 @@ class RestaurantDetailPage extends StatelessWidget {
             child: Consumer<RestaurantProvider>(
               builder: (context, state, _) {
                 if (state.state == ResultState.loading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    backgroundColor: Colors.black,
+                  ));
                 } else if (state.state == ResultState.hasData) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +142,7 @@ class RestaurantDetailPage extends StatelessWidget {
                 } else {
                   return const Center(
                     child: Material(
-                      child: Text(''),
+                      child: Text('Please check your internet connection!'),
                     ),
                   );
                 }
