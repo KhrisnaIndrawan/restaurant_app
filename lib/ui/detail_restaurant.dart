@@ -1,134 +1,167 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/data/model/restaurant_list.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/data/api/api_service.dart';
+import 'package:restaurant_app/provider/restaurant_details_provider.dart';
+
+import '../data/model/restaurant_detail.dart';
 
 class RestaurantDetailPage extends StatelessWidget {
   static const routeName = '/restaurant_detail';
 
-  final Restaurant restaurant;
+  final String id;
 
-  const RestaurantDetailPage({super.key, required this.restaurant});
+  const RestaurantDetailPage({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Restaurant App'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hero(
-              tag: restaurant.id.toString(),
-              child: Image.network(
-                'https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}',
-                fit: BoxFit.fitWidth,
-                width: double.infinity,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 16.0),
-                  Text(
-                    restaurant.name.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 28.0),
-                    textAlign: TextAlign.start,
-                  ),
-                  Row(
+    return ChangeNotifierProvider(
+      create: (_) => RestaurantProvider(apiService: ApiService(), id: id),
+      builder: (context, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Restaurant App'),
+          ),
+          body: SingleChildScrollView(
+            child: Consumer<RestaurantProvider>(
+              builder: (context, state, _) {
+                if (state.state == ResultState.loading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state.state == ResultState.hasData) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
-                        Icons.location_on,
-                        size: 16.0,
+                      Hero(
+                        tag: state.result.restaurant.id,
+                        child: Image.network(
+                          'https://restaurant-api.dicoding.dev/images/medium/${state.result.restaurant.pictureId}',
+                          fit: BoxFit.fitWidth,
+                          width: double.infinity,
+                        ),
                       ),
-                      const SizedBox(width: 4.0),
-                      Text(restaurant.city.toString())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.star,
-                        size: 16.0,
+                      Container(
+                        margin: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16.0),
+                            Text(
+                              state.result.restaurant.name,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 28.0),
+                              textAlign: TextAlign.start,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  size: 16.0,
+                                ),
+                                const SizedBox(width: 4.0),
+                                Text(state.result.restaurant.city)
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  size: 16.0,
+                                ),
+                                const SizedBox(width: 4.0),
+                                Text(state.result.restaurant.rating.toString())
+                              ],
+                            ),
+                            const SizedBox(height: 16.0),
+                            const Text(
+                              'About the restaurant',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0),
+                              textAlign: TextAlign.start,
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(state.result.restaurant.description),
+                            const SizedBox(height: 16.0),
+                            const Text(
+                              'Food Categories',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0),
+                              textAlign: TextAlign.start,
+                            ),
+                            const SizedBox(height: 8.0),
+                            ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                physics: const ScrollPhysics(),
+                                itemCount:
+                                    state.result.restaurant.menus.foods.length,
+                                itemBuilder: (context, index) {
+                                  var food = state
+                                      .result.restaurant.menus.foods[index];
+
+                                  return _buildFooditem(context, food);
+                                }),
+                            const SizedBox(height: 16.0),
+                            const Text(
+                              'Drink Categories',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0),
+                              textAlign: TextAlign.start,
+                            ),
+                            const SizedBox(height: 8.0),
+                            ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                physics: const ScrollPhysics(),
+                                itemCount:
+                                    state.result.restaurant.menus.drinks.length,
+                                itemBuilder: (context, index) {
+                                  var drink = state
+                                      .result.restaurant.menus.drinks[index];
+
+                                  return _buildDrinkitem(context, drink);
+                                }),
+                          ],
+                        ),
                       ),
-                      const SizedBox(width: 4.0),
-                      Text(restaurant.rating.toString())
                     ],
-                  ),
-                  const SizedBox(height: 16.0),
-                  const Text(
-                    'About the restaurant',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-                    textAlign: TextAlign.start,
-                  ),
-                  const SizedBox(height: 8.0),
-                  Text(restaurant.description.toString()),
-                  const SizedBox(height: 16.0),
-                  const Text(
-                    'Food Categories',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-                    textAlign: TextAlign.start,
-                  ),
-                  const SizedBox(height: 8.0),
-                  // ListView.builder(
-                  //     scrollDirection: Axis.vertical,
-                  //     shrinkWrap: true,
-                  //     physics: const ScrollPhysics(),
-                  //     itemCount: restaurant.menus.foods.length,
-                  //     itemBuilder: (context, index) {
-                  //       var food = restaurant.menus.foods[index];
-
-                  //       if (food != null) {
-                  //         return _buildFooditem(context, food);
-                  //       }
-                  //       return const Text('No data');
-                  //     }),
-                  const SizedBox(height: 16.0),
-                  const Text(
-                    'Drink Categories',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-                    textAlign: TextAlign.start,
-                  ),
-                  const SizedBox(height: 8.0),
-                  // ListView.builder(
-                  //     scrollDirection: Axis.vertical,
-                  //     shrinkWrap: true,
-                  //     physics: const ScrollPhysics(),
-                  //     itemCount: restaurant.menus.drinks.length,
-                  //     itemBuilder: (context, index) {
-                  //       var drink = restaurant.menus.drinks[index];
-
-                  //       if (drink != null) {
-                  //         return _buildDrinkitem(context, drink);
-                  //       }
-                  //       return const Text('No Data');
-                  //     }),
-                ],
-              ),
+                  );
+                } else if (state.state == ResultState.noData) {
+                  return Center(
+                    child: Material(
+                      child: Text(state.message),
+                    ),
+                  );
+                } else if (state.state == ResultState.error) {
+                  return Center(
+                    child: Material(
+                      child: Text(state.message),
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: Material(
+                      child: Text(''),
+                    ),
+                  );
+                }
+              },
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
 
-// Widget _buildFooditem(BuildContext context, Foods foods) {
-//   return ListTile(
-//     leading: const Icon(Icons.fastfood_rounded),
-//     title: Text(foods.name().toString()),
-//   );
-// }
+Widget _buildFooditem(BuildContext context, Category foods) {
+  return ListTile(
+    leading: const Icon(Icons.fastfood_rounded),
+    title: Text(foods.name),
+  );
+}
 
-// Widget _buildDrinkitem(BuildContext context, Drinks drinks) {
-//   return ListTile(
-//     leading: const Icon(Icons.local_drink),
-//     title: Text(drinks.name().toString()),
-//   );
-// }
+Widget _buildDrinkitem(BuildContext context, Category drinks) {
+  return ListTile(
+    leading: const Icon(Icons.local_drink),
+    title: Text(drinks.name.toString()),
+  );
+}
