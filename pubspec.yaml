@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   alert_banner: ^1.0.0
+  awesome_snackbar_content_new: ^0.1.2
   convert: ^3.1.1
   flutter:
     sdk: flutter

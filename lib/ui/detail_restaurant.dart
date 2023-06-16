@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/provider/restaurant_details_provider.dart';
-
 import '../data/model/restaurant_detail.dart';
+import 'package:awesome_snackbar_content_new/awesome_snackbar_content.dart';
 
 class RestaurantDetailPage extends StatelessWidget {
   static const routeName = '/restaurant_detail';
@@ -128,24 +128,46 @@ class RestaurantDetailPage extends StatelessWidget {
                     ],
                   );
                 } else if (state.state == ResultState.noData) {
-                  return Center(
-                    child: Material(
-                      child: Text(state.message),
-                    ),
-                  );
+                  return MaterialBanner(
+                      elevation: 0,
+                      forceActionsBelow: true,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'On Snap!',
+                        message: 'No Restaurant Data',
+
+                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                        contentType: ContentType.failure,
+                      ),
+                      actions: const [SizedBox.shrink()]);
                 } else if (state.state == ResultState.error) {
-                  return Center(
-                    child: Material(
-                      child: Text(
-                          '${state.message} Please check your internet connection!'),
-                    ),
-                  );
+                  return MaterialBanner(
+                      elevation: 0,
+                      forceActionsBelow: true,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'On Snap!',
+                        message:
+                            'Cannot access host, please check your internet connection!',
+
+                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                        contentType: ContentType.failure,
+                      ),
+                      actions: const [SizedBox.shrink()]);
                 } else {
-                  return const Center(
-                    child: Material(
-                      child: Text('Please check your internet connection!'),
-                    ),
-                  );
+                  return MaterialBanner(
+                      elevation: 0,
+                      forceActionsBelow: true,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'On Snap!',
+                        message:
+                            'Cannot access host, please check your internet connection!',
+
+                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                        contentType: ContentType.failure,
+                      ),
+                      actions: const [SizedBox.shrink()]);
                 }
               },
             ),
