@@ -4,7 +4,6 @@ import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/provider/restaurant_provider.dart';
 import 'package:restaurant_app/ui/detail_restaurant.dart';
 import 'package:restaurant_app/ui/restaurant_list.dart';
-import 'package:restaurant_app/data/model/restaurant_list.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
