@@ -48,12 +48,14 @@ class RestaurantProvider extends ChangeNotifier {
   }
 
   void searchRestaurant(String query) {
-    final searchList = result.restaurants
-        .where((element) =>
-            element.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    if (_restaurantsResult.restaurants.isEmpty != true) {
+      final searchList = result.restaurants
+          .where((element) =>
+              element.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
 
-    _restaurantsResult.restaurants = searchList;
-    notifyListeners();
+      _restaurantsResult.restaurants = searchList;
+      notifyListeners();
+    }
   }
 }
