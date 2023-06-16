@@ -136,7 +136,8 @@ class RestaurantDetailPage extends StatelessWidget {
                 } else if (state.state == ResultState.error) {
                   return Center(
                     child: Material(
-                      child: Text(state.message),
+                      child: Text(
+                          '${state.message} Please check your internet connection!'),
                     ),
                   );
                 } else {
