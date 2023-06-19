@@ -26,21 +26,21 @@ class RestaurantDetailPage extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Consumer<RestaurantProvider>(
-              builder: (context, state, _) {
-                if (state.state == ResultState.loading) {
+              builder: (context, restaurantProvider, _) {
+                if (restaurantProvider.state == ResultState.loading) {
                   return const Center(
                       heightFactor: 12,
                       child: CircularProgressIndicator(
                         backgroundColor: Colors.black,
                       ));
-                } else if (state.state == ResultState.hasData) {
+                } else if (restaurantProvider.state == ResultState.hasData) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Hero(
-                        tag: state.result.restaurant.id,
+                        tag: restaurantProvider.result.restaurant.id,
                         child: Image.network(
-                          'https://restaurant-api.dicoding.dev/images/medium/${state.result.restaurant.pictureId}',
+                          'https://restaurant-api.dicoding.dev/images/medium/${restaurantProvider.result.restaurant.pictureId}',
                           fit: BoxFit.fitWidth,
                           width: double.infinity,
                         ),
@@ -56,7 +56,7 @@ class RestaurantDetailPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    state.result.restaurant.name,
+                                    restaurantProvider.result.restaurant.name,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 28.0),
@@ -66,7 +66,8 @@ class RestaurantDetailPage extends StatelessWidget {
                                     builder: (context, provider, child) {
                                       return FutureBuilder<bool>(
                                         future: provider.isBookmarked(
-                                            state.result.restaurant.id),
+                                            restaurantProvider
+                                                .result.restaurant.id),
                                         builder: (context, snapshot) {
                                           var isBookmarked =
                                               snapshot.data ?? false;
@@ -81,10 +82,11 @@ class RestaurantDetailPage extends StatelessWidget {
                                                               DatabaseProvider>(
                                                           context,
                                                           listen: false)
-                                                      .removeBookmark(state
-                                                          .result
-                                                          .restaurant
-                                                          .id),
+                                                      .removeBookmark(
+                                                          restaurantProvider
+                                                              .result
+                                                              .restaurant
+                                                              .id),
                                                 )
                                               : IconButton(
                                                   icon: const Icon(
@@ -93,30 +95,36 @@ class RestaurantDetailPage extends StatelessWidget {
                                                       .colorScheme
                                                       .secondary,
                                                   onPressed: () {
-                                                    Provider.of<DatabaseProvider>(
-                                                            context,
-                                                            listen: false)
+                                                    Provider
+                                                            .of<
+                                                                    DatabaseProvider>(context,
+                                                                listen: false)
                                                         .addBookmark(Bookmark(
-                                                            id: state.result
-                                                                .restaurant.id,
+                                                            id:
+                                                                restaurantProvider
+                                                                    .result
+                                                                    .restaurant
+                                                                    .id,
                                                             name:
-                                                                state
+                                                                restaurantProvider
                                                                     .result
                                                                     .restaurant
                                                                     .name,
                                                             city:
-                                                                state
+                                                                restaurantProvider
                                                                     .result
                                                                     .restaurant
                                                                     .city,
-                                                            pictureId: state
-                                                                .result
-                                                                .restaurant
-                                                                .pictureId,
-                                                            rating: state
-                                                                .result
-                                                                .restaurant
-                                                                .rating));
+                                                            pictureId:
+                                                                restaurantProvider
+                                                                    .result
+                                                                    .restaurant
+                                                                    .pictureId,
+                                                            rating:
+                                                                restaurantProvider
+                                                                    .result
+                                                                    .restaurant
+                                                                    .rating));
                                                   },
                                                 );
                                         },
@@ -131,7 +139,7 @@ class RestaurantDetailPage extends StatelessWidget {
                                   size: 16.0,
                                 ),
                                 const SizedBox(width: 4.0),
-                                Text(state.result.restaurant.city)
+                                Text(restaurantProvider.result.restaurant.city)
                               ],
                             ),
                             Row(
@@ -141,7 +149,8 @@ class RestaurantDetailPage extends StatelessWidget {
                                   size: 16.0,
                                 ),
                                 const SizedBox(width: 4.0),
-                                Text(state.result.restaurant.rating.toString())
+                                Text(restaurantProvider.result.restaurant.rating
+                                    .toString())
                               ],
                             ),
                             const SizedBox(height: 16.0),
@@ -152,7 +161,8 @@ class RestaurantDetailPage extends StatelessWidget {
                               textAlign: TextAlign.start,
                             ),
                             const SizedBox(height: 8.0),
-                            Text(state.result.restaurant.description),
+                            Text(restaurantProvider
+                                .result.restaurant.description),
                             const SizedBox(height: 16.0),
                             const Text(
                               'Food Categories',
@@ -162,13 +172,12 @@ class RestaurantDetailPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 8.0),
                             ListView.builder(
-                                scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 physics: const ScrollPhysics(),
-                                itemCount: state
+                                itemCount: restaurantProvider
                                     .result.restaurant.menus?.foods?.length,
                                 itemBuilder: (context, index) {
-                                  var food = state
+                                  var food = restaurantProvider
                                       .result.restaurant.menus!.foods?[index];
 
                                   return _buildFooditem(context, food);
@@ -182,13 +191,12 @@ class RestaurantDetailPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 8.0),
                             ListView.builder(
-                                scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 physics: const ScrollPhysics(),
-                                itemCount: state
+                                itemCount: restaurantProvider
                                     .result.restaurant.menus?.drinks?.length,
                                 itemBuilder: (context, index) {
-                                  var drink = state
+                                  var drink = restaurantProvider
                                       .result.restaurant.menus!.drinks?[index];
 
                                   return _buildDrinkitem(context, drink);
@@ -198,7 +206,7 @@ class RestaurantDetailPage extends StatelessWidget {
                       ),
                     ],
                   );
-                } else if (state.state == ResultState.noData) {
+                } else if (restaurantProvider.state == ResultState.noData) {
                   return MaterialBanner(
                       elevation: 0,
                       forceActionsBelow: true,
@@ -211,7 +219,7 @@ class RestaurantDetailPage extends StatelessWidget {
                         contentType: ContentType.failure,
                       ),
                       actions: const [SizedBox.shrink()]);
-                } else if (state.state == ResultState.error) {
+                } else if (restaurantProvider.state == ResultState.error) {
                   return MaterialBanner(
                       elevation: 0,
                       forceActionsBelow: true,
