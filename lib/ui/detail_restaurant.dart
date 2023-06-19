@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/api/api_service.dart';
+import 'package:restaurant_app/data/model/bookmark.dart';
+import 'package:restaurant_app/provider/database_provider.dart';
 import 'package:restaurant_app/provider/restaurant_details_provider.dart';
-import '../data/model/restaurant_detail.dart';
+import '../data/model/restaurant.dart';
 import 'package:awesome_snackbar_content_new/awesome_snackbar_content.dart';
-import 'package:restaurant_app/provider/result_state.dart';
+import 'package:restaurant_app/utils/result_state.dart';
 
 class RestaurantDetailPage extends StatelessWidget {
   static const routeName = '/restaurant_detail';
@@ -49,12 +51,79 @@ class RestaurantDetailPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 16.0),
-                            Text(
-                              state.result.restaurant.name,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 28.0),
-                              textAlign: TextAlign.start,
-                            ),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    state.result.restaurant.name,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 28.0),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  Consumer<DatabaseProvider>(
+                                    builder: (context, provider, child) {
+                                      return FutureBuilder<bool>(
+                                        future: provider.isBookmarked(
+                                            state.result.restaurant.id),
+                                        builder: (context, snapshot) {
+                                          var isBookmarked =
+                                              snapshot.data ?? false;
+                                          return isBookmarked
+                                              ? IconButton(
+                                                  icon: const Icon(
+                                                      Icons.bookmark),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  onPressed: () => Provider.of<
+                                                              DatabaseProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .removeBookmark(state
+                                                          .result
+                                                          .restaurant
+                                                          .id),
+                                                )
+                                              : IconButton(
+                                                  icon: const Icon(
+                                                      Icons.bookmark_border),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  onPressed: () {
+                                                    Provider.of<DatabaseProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .addBookmark(Bookmark(
+                                                            id: state.result
+                                                                .restaurant.id,
+                                                            name:
+                                                                state
+                                                                    .result
+                                                                    .restaurant
+                                                                    .name,
+                                                            city:
+                                                                state
+                                                                    .result
+                                                                    .restaurant
+                                                                    .city,
+                                                            pictureId: state
+                                                                .result
+                                                                .restaurant
+                                                                .pictureId,
+                                                            rating: state
+                                                                .result
+                                                                .restaurant
+                                                                .rating));
+                                                  },
+                                                );
+                                        },
+                                      );
+                                    },
+                                  )
+                                ]),
                             Row(
                               children: [
                                 const Icon(
@@ -96,11 +165,11 @@ class RestaurantDetailPage extends StatelessWidget {
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 physics: const ScrollPhysics(),
-                                itemCount:
-                                    state.result.restaurant.menus.foods.length,
+                                itemCount: state
+                                    .result.restaurant.menus?.foods?.length,
                                 itemBuilder: (context, index) {
                                   var food = state
-                                      .result.restaurant.menus.foods[index];
+                                      .result.restaurant.menus!.foods?[index];
 
                                   return _buildFooditem(context, food);
                                 }),
@@ -116,11 +185,11 @@ class RestaurantDetailPage extends StatelessWidget {
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 physics: const ScrollPhysics(),
-                                itemCount:
-                                    state.result.restaurant.menus.drinks.length,
+                                itemCount: state
+                                    .result.restaurant.menus?.drinks?.length,
                                 itemBuilder: (context, index) {
                                   var drink = state
-                                      .result.restaurant.menus.drinks[index];
+                                      .result.restaurant.menus!.drinks?[index];
 
                                   return _buildDrinkitem(context, drink);
                                 }),
@@ -180,16 +249,16 @@ class RestaurantDetailPage extends StatelessWidget {
   }
 }
 
-Widget _buildFooditem(BuildContext context, Category foods) {
+Widget _buildFooditem(BuildContext context, Category? foods) {
   return ListTile(
     leading: const Icon(Icons.fastfood_rounded),
-    title: Text(foods.name),
+    title: Text(foods!.name.toString()),
   );
 }
 
-Widget _buildDrinkitem(BuildContext context, Category drinks) {
+Widget _buildDrinkitem(BuildContext context, Category? drinks) {
   return ListTile(
     leading: const Icon(Icons.local_drink),
-    title: Text(drinks.name.toString()),
+    title: Text(drinks!.name.toString()),
   );
 }

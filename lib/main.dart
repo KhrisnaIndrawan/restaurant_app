@@ -7,6 +7,8 @@ import 'package:restaurant_app/data/preferences/preferences_helper.dart';
 import 'package:restaurant_app/ui/detail_restaurant.dart';
 import 'package:restaurant_app/ui/restaurant_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:restaurant_app/provider/database_provider.dart';
+import 'package:restaurant_app/data/db/database_helper.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -19,6 +21,8 @@ void main() {
         ),
       ),
     ),
+    ChangeNotifierProvider(
+        create: (_) => DatabaseProvider(databaseHelper: DatabaseHelper()))
   ], child: const MainApp()));
 }
 

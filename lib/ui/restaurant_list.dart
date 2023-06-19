@@ -4,7 +4,7 @@ import 'package:restaurant_app/provider/preferences_provider.dart';
 import 'package:restaurant_app/provider/restaurant_provider.dart';
 import 'package:restaurant_app/widgets/card_restaurant.dart';
 import 'package:awesome_snackbar_content_new/awesome_snackbar_content.dart';
-import 'package:restaurant_app/provider/result_state.dart';
+import 'package:restaurant_app/utils/result_state.dart';
 
 class RestaurantListPage extends StatelessWidget {
   static const routeName = '/restaurant_list';

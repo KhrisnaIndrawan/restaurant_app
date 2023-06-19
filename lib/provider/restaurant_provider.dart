@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/restaurant_list.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/provider/result_state.dart';
+import 'package:restaurant_app/utils/result_state.dart';
 
 class RestaurantProvider extends ChangeNotifier {
   final ApiService apiService;
@@ -47,7 +47,7 @@ class RestaurantProvider extends ChangeNotifier {
   }
 
   void searchRestaurant(String query) {
-    if (_restaurantsResult.restaurants.isEmpty != true) {
+    if (_restaurantsResult.restaurants.isNotEmpty) {
       final searchList = result.restaurants
           .where((element) =>
               element.name.toLowerCase().contains(query.toLowerCase()))
