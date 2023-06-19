@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/preferences_provider.dart';
 import 'package:restaurant_app/provider/restaurant_provider.dart';
+import 'package:restaurant_app/ui/bookmark_page.dart';
 import 'package:restaurant_app/widgets/card_restaurant.dart';
 import 'package:awesome_snackbar_content_new/awesome_snackbar_content.dart';
 import 'package:restaurant_app/utils/result_state.dart';
@@ -17,6 +18,13 @@ class RestaurantListPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Restaurant App'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.bookmark),
+            color: Theme.of(context).colorScheme.secondary,
+            onPressed: () {
+              Navigator.pushNamed(context, BookmarksPage.routeName);
+            },
+          ),
           PopupMenuButton(
             onSelected: (item) => _onSelected(context, item),
             itemBuilder: (context) => [

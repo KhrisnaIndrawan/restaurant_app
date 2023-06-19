@@ -4,6 +4,7 @@ import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/provider/restaurant_provider.dart';
 import 'package:restaurant_app/provider/preferences_provider.dart';
 import 'package:restaurant_app/data/preferences/preferences_helper.dart';
+import 'package:restaurant_app/ui/bookmark_page.dart';
 import 'package:restaurant_app/ui/detail_restaurant.dart';
 import 'package:restaurant_app/ui/restaurant_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +44,7 @@ class MainApp extends StatelessWidget {
             RestaurantDetailPage.routeName: (context) => RestaurantDetailPage(
                   id: ModalRoute.of(context)?.settings.arguments as String,
                 ),
+            BookmarksPage.routeName: (context) => const BookmarksPage(),
           },
         );
       },
