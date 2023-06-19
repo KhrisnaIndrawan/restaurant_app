@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/provider/preferences_provider.dart';
 import 'package:restaurant_app/provider/restaurant_provider.dart';
 import 'package:restaurant_app/widgets/card_restaurant.dart';
 import 'package:awesome_snackbar_content_new/awesome_snackbar_content.dart';
+import 'package:restaurant_app/provider/result_state.dart';
 
-class RestaurantListPage extends StatefulWidget {
+class RestaurantListPage extends StatelessWidget {
   static const routeName = '/restaurant_list';
 
   const RestaurantListPage({Key? key}) : super(key: key);
-
-  @override
-  State<RestaurantListPage> createState() => _RestaurantListPageState();
-}
-
-class _RestaurantListPageState extends State<RestaurantListPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Restaurant App'),
+        actions: [
+          PopupMenuButton(
+            onSelected: (item) => _onSelected(context, item),
+            itemBuilder: (context) => [
+              const PopupMenuItem<int>(value: 0, child: Text('Change Theme'))
+            ],
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -114,5 +114,21 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
         ],
       ),
     );
+  }
+
+  void _onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        var value = Provider.of<PreferencesProvider>(context, listen: false)
+            .isDarkTheme;
+        if (value) {
+          Provider.of<PreferencesProvider>(context, listen: false)
+              .enableDarkTheme(!value);
+        } else {
+          Provider.of<PreferencesProvider>(context, listen: false)
+              .enableDarkTheme(!value);
+        }
+        break;
+    }
   }
 }

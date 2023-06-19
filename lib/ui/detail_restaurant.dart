@@ -4,6 +4,7 @@ import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/provider/restaurant_details_provider.dart';
 import '../data/model/restaurant_detail.dart';
 import 'package:awesome_snackbar_content_new/awesome_snackbar_content.dart';
+import 'package:restaurant_app/provider/result_state.dart';
 
 class RestaurantDetailPage extends StatelessWidget {
   static const routeName = '/restaurant_detail';
@@ -26,9 +27,10 @@ class RestaurantDetailPage extends StatelessWidget {
               builder: (context, state, _) {
                 if (state.state == ResultState.loading) {
                   return const Center(
+                      heightFactor: 12,
                       child: CircularProgressIndicator(
-                    backgroundColor: Colors.black,
-                  ));
+                        backgroundColor: Colors.black,
+                      ));
                 } else if (state.state == ResultState.hasData) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
