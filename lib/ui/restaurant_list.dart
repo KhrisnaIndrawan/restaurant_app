@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/preferences_provider.dart';
 import 'package:restaurant_app/provider/restaurant_provider.dart';
+import 'package:restaurant_app/provider/scheduling_provider.dart';
 import 'package:restaurant_app/ui/bookmark_page.dart';
 import 'package:restaurant_app/widgets/card_restaurant.dart';
 import 'package:awesome_snackbar_content_new/awesome_snackbar_content.dart';
@@ -26,9 +27,46 @@ class RestaurantListPage extends StatelessWidget {
             },
           ),
           PopupMenuButton(
-            onSelected: (item) => _onSelected(context, item),
             itemBuilder: (context) => [
-              const PopupMenuItem<int>(value: 0, child: Text('Change Theme'))
+              PopupMenuItem<int>(
+                child: Consumer<PreferencesProvider>(
+                  builder: (context, value, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Dark Mode'),
+                        Switch.adaptive(
+                          value: Provider.of<PreferencesProvider>(context,
+                                  listen: false)
+                              .isDarkTheme,
+                          onChanged: (value) {
+                            Provider.of<PreferencesProvider>(context,
+                                    listen: false)
+                                .enableDarkTheme(value);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              PopupMenuItem(
+                child: Consumer<SchedulingProvider>(
+                    builder: (context, scheduled, _) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Daily Suggestion'),
+                      Switch.adaptive(
+                        value: scheduled.isScheduled,
+                        onChanged: (value) async {
+                          scheduled.scheduledNews(value);
+                        },
+                      ),
+                    ],
+                  );
+                }),
+              )
             ],
           )
         ],
@@ -122,21 +160,5 @@ class RestaurantListPage extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _onSelected(BuildContext context, int item) {
-    switch (item) {
-      case 0:
-        var value = Provider.of<PreferencesProvider>(context, listen: false)
-            .isDarkTheme;
-        if (value) {
-          Provider.of<PreferencesProvider>(context, listen: false)
-              .enableDarkTheme(!value);
-        } else {
-          Provider.of<PreferencesProvider>(context, listen: false)
-              .enableDarkTheme(!value);
-        }
-        break;
-    }
   }
 }
