@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:restaurant_app/common/navigation.dart';
 import 'package:restaurant_app/data/model/restaurant_list.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -74,7 +75,8 @@ class NotificationHelper {
     selectNotificationSubject.stream.listen(
       (String payload) async {
         var data = RestaurantsResult.fromJson(json.decode(payload));
-        var article = data.restaurants[0];
+        var randomNumber = Random().nextInt(data.restaurants.length);
+        var article = data.restaurants[randomNumber];
         Navigation.intentWithData(route, article);
       },
     );
