@@ -63,19 +63,23 @@ class NotificationHelper {
       iOS: iOSPlatformChannelSpecifics,
     );
 
-    var titleNotification = "<b>Headline News</b>";
-    var titleNews = restaurants.restaurants[0].name;
+    var titleNotification = "<b>Daily Suggestion</b>";
+    var randomNumber = Random().nextInt(restaurants.restaurants.length);
+    var titleNews = restaurants.restaurants[randomNumber].name;
+
+    var payload = restaurants.toJson();
+    payload["random"] = randomNumber;
 
     await flutterLocalNotificationsPlugin.show(
         0, titleNotification, titleNews, platformChannelSpecifics,
-        payload: json.encode(restaurants.toJson()));
+        payload: json.encode(payload));
   }
 
   void configureSelectNotificationSubject(String route) {
     selectNotificationSubject.stream.listen(
       (String payload) async {
         var data = RestaurantsResult.fromJson(json.decode(payload));
-        var randomNumber = Random().nextInt(data.restaurants.length);
+        var randomNumber = json.decode(payload)["random"];
         var article = data.restaurants[randomNumber];
         Navigation.intentWithData(route, article);
       },
